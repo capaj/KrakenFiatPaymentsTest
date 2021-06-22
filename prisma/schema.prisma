@@ -1,0 +1,42 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["nApi"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:6432/fiat-import-worker?schema=public"
+}
+
+model BankAccount {
+  id             Int      @id @default(autoincrement())
+  routing_number String   @db.VarChar(9)
+  account_number String   @db.VarChar(10)
+  user_id        Int?
+  user           User?    @relation(fields: [user_id], references: [id])
+  created_at     DateTime @default(now())
+
+  transactionsRecipient Transaction[] @relation("FromBankAccount")
+  transactionsSender    Transaction[] @relation("toBankAccount")
+  @@unique([routing_number, account_number])
+}
+
+model Transaction {
+  id         String       @id @db.Uuid
+  amount     Int
+  currency   String       @db.VarChar(255)
+  from_id    Int?
+  to_id      Int? // we never populate it
+  from       BankAccount? @relation("FromBankAccount", fields: [from_id], references: [id])
+  to         BankAccount? @relation("toBankAccount", fields: [to_id], references: [id])
+  created_at DateTime     @default(now())
+
+  @@map("transaction")
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  full_name     String        @db.VarChar(512)
+  bank_accounts BankAccount[]
+  created_at    DateTime      @default(now())
+}

@@ -1,6 +1,6 @@
 # Kraken Hiring Test - Backend Engineer - Fiat Payments
 
-At Kraken, we receive thousands of deposits from customers per day. This test is designed to test your ability to work with a transaction set that could get returned by a banking partner. A common approach to detect incoming deposits is to poll a /transactions endpoint and inspect the result.  Deposit transactions can be identified by matching their destination to a known user depository account.
+At Kraken, we receive thousands of deposits from customers per day. This test is designed to test your ability to work with a transaction set that could get returned by a banking partner. A common approach to detect incoming deposits is to poll a /transactions endpoint and inspect the result. Deposit transactions can be identified by matching their destination to a known user depository account.
 
 This test contains 2 sample json files that represent the data from 2 separate calls to this endpoint. Your task is to write code that processes those files and detects all valid incoming deposits. Additional files will be included in the projects data directory when scoring the submission to check edge case handling.
 
@@ -10,14 +10,14 @@ These instructions do not specify every single detail you should take into consi
 
 Known customer depository accounts are:
 
-* Jadzia Dax [{routingNumber: 011000015, accountNumber: 6622085487}]
-* James T. Kirk [{routingNumber: 021001208, accountNumber: 0018423486}]
-* Jean-Luc Picard [{routingNumber: 021001208, accountNumber: 1691452698}]
-* Jonathan Archer [{routingNumber: 011000015, accountNumber: 3572176408}]
-* Leonard McCoy [{routingNumber: 011000015, accountNumber: 8149516692}]
-* Montgomery Scott [{routingNumber: 011000015, accountNumber: 7438979785}]
-* Spock [{routingNumber: 011000015, accountNumber: 1690537988}, {routingNumber: 021001208, accountNumber: 1690537989}]
-* Wesley Crusher [{routingNumber: 011000015, accountNumber: 6018423486}]
+- Jadzia Dax [{routingNumber: 011000015, accountNumber: 6622085487}]
+- James T. Kirk [{routingNumber: 021001208, accountNumber: 0018423486}]
+- Jean-Luc Picard [{routingNumber: 021001208, accountNumber: 1691452698}]
+- Jonathan Archer [{routingNumber: 011000015, accountNumber: 3572176408}]
+- Leonard McCoy [{routingNumber: 011000015, accountNumber: 8149516692}]
+- Montgomery Scott [{routingNumber: 011000015, accountNumber: 7438979785}]
+- Spock [{routingNumber: 011000015, accountNumber: 1690537988}, {routingNumber: 021001208, accountNumber: 1690537989}]
+- Wesley Crusher [{routingNumber: 011000015, accountNumber: 6018423486}]
 
 ## Requirements
 
@@ -25,7 +25,7 @@ Build a dockerized Node.js application to process the two transaction sets. If y
 
 The application must run using the command `docker-compose up`, which will be executed from the root directory of the submission.
 
-Transaction files should be read from the mounted directory `data` which exists in the root directory of the project.  On submission, both sample1.json and sample2.json transaction files should be present in the data directory.  Additional files will be added to the data directory when scoring the submission.
+Transaction files should be read from the mounted directory `data` which exists in the root directory of the project. On submission, both sample1.json and sample2.json transaction files should be present in the data directory. Additional files will be added to the data directory when scoring the submission.
 
 The application should read all transactions from all files in the mounted data directory and store all deposits in a database of your choice.
 
@@ -43,10 +43,9 @@ Transaction records credited to users should be read from the database, and the 
     Smallest valid deposit: x.xx USD
     Largest valid deposit: x.xx USD
 
+The numbers in lines 1 - 8 MUST contain the count of valid deposits and their sum for the respective customer.
 
-The numbers in lines 1 - 7 MUST contain the count of valid deposits and their sum for the respective customer.
-
-The numbers in line 8 MUST be the count and the sum of the valid deposits to addresses that are not associated with a known customer.
+The numbers in line 9 MUST be the count and the sum of the valid deposits to addresses that are not associated with a known customer.
 
 ## Submitting your results
 

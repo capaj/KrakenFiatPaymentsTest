@@ -1,0 +1,20 @@
+{
+  "transaction_count": 1,
+  "transactions": [
+    {
+      "id": "1e471dca-dcb2-47f8-8077-63659f2274ee",
+      "to": {
+        "routing_number": "011000015",
+        "account_number": "3572176408"
+      },
+      "from": {
+        "routing_number": "130495809",
+        "account_number": "9834891235"
+      },
+      "amount": {
+        "amount": 724.6,
+        "currency": "USD"
+      }
+    }
+  ]
+}

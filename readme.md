@@ -4,11 +4,7 @@
 
 Just `docker-compose up`.
 
-## Why did I choose MikroORM?
+## Why did I choose Prisma?
 
-This could have been implemented without an ORM or with objection/prisma/typeorm and myriads of others.
-I've never worked with MikroORM and if I am going to spend time writing code just to show I know how to code, then I might as well try out a new ORM while I am at it.
-
-## What did I think about mikroORM?
-
-It seems like a solid, especially if you're coming from the likes of doctrine
+This could have been implemented without an ORM or with objection/typeorm/MikroOrm and myriads of others.
+I've only worked with prisma once before but it captivated me with it's DX and typesafety. Performance wise there would be a way to make it considerably faster by writing raw queries/prepared statements, but since performance was not mentioned in the readme, I went with prisma to save same time. If you wish me to make this faster please let me know what throughput you need and I can make my best to try and achieve it.
