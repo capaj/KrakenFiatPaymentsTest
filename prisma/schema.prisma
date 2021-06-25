@@ -5,7 +5,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:6432/fiat-import-worker?schema=public"
+  // url      = "postgresql://postgres:postgres@localhost:6432/fiat-import-worker?schema=public" // for local dev
+  url      = "postgresql://postgres:postgres@postgresprisma:5432/fiat-import-worker?schema=public"
 }
 
 model BankAccount {

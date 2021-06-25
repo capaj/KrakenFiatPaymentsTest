@@ -4,19 +4,13 @@ import { prisma } from './prismaClient'
 import debug from 'debug'
 import { upsertTransactionAndBankAccount } from './upsertTransactionAndBankAccount'
 import { runAnalyticsForUsers } from './runAnalyticsForUsers'
-
+import { TransactionType } from './TransactionInputShape'
+import { seedDb } from './seedUsersAndBankAccounts'
 const log = debug('fiatWorker')
 
 export interface ITransactionJsonFile {
   transaction_count: number
-  transactions: Transaction[]
-}
-
-export interface Transaction {
-  id: string
-  to: IAccountNumbers
-  from: IAccountNumbers
-  amount: Amount
+  transactions: TransactionType[]
 }
 
 export interface Amount {
@@ -24,21 +18,18 @@ export interface Amount {
   currency: string
 }
 
-export interface IAccountNumbers {
-  routing_number: string
-  account_number: string
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-// const getSingleUserDeposits = (user) => {}
-
-export function formatDecimalInt(int: number | null) {
-  return (int ?? 0) / 100
-}
-
+/**
+ * this can be retried in case of failures without any danger of creating any duplicates because transaction id is honored
+ */
 export async function fiatWorker() {
+  await sleep(1000)
   const jsonFiles = await globby('data/*.json')
-
-  await prisma.transaction.deleteMany()
+  await prisma.$connect()
+  await seedDb()
 
   for (const jsonFile of jsonFiles) {
     const data: ITransactionJsonFile = await fs.readJson(jsonFile)

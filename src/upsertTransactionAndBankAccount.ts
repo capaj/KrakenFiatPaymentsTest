@@ -1,11 +1,18 @@
 import { prisma } from './prismaClient'
-import { Transaction } from './fiatWorker'
+
+import { TransactionInputShape, TransactionType } from './TransactionInputShape'
 
 export async function upsertTransactionAndBankAccount(
-  transactionInput: Transaction
+  transactionInput: TransactionType
 ) {
-  if (!transactionInput.to) {
-    throw new TypeError('Transaction must have a receiver "to" account')
+  TransactionInputShape.parse(transactionInput) // validate using zod
+
+  const amountRoundedToCents = Math.round(transactionInput.amount.amount * 100)
+
+  if (amountRoundedToCents <= 0) {
+    throw new Error(
+      'Transaction amount must be at least 1/100th of the base account unit'
+    )
   }
   const numbers = transactionInput.to
   const bankAccount = await prisma.bankAccount.upsert({
@@ -16,7 +23,6 @@ export async function upsertTransactionAndBankAccount(
     update: {}
   })
 
-  const amountRoundedToCents = Math.round(transactionInput.amount.amount * 100)
   const transaction = await prisma.transaction.upsert({
     where: {
       id: transactionInput.id

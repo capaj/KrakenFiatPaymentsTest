@@ -8,15 +8,18 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
+    volumes:
+      - ./data:/usr/src/app/data
     depends_on:
       - db
   db:
     image: postgres
+    container_name: postgresprisma
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: fiat-import-worker
-    # volumes:
-    #   - ./pgdata:/var/lib/postgresql/data
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
       - '6432:5432'

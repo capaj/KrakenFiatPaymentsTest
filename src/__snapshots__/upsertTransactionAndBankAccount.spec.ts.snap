@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`upsertTransactionAndBankAccount should add transaction with a new bank account 1`] = `
+Array [
+  Object {
+    "amount": 1132,
+    "currency": "USD",
+    "from_id": null,
+    "id": "c910e278-1362-4d3a-b224-47d40eb6eb45",
+    "to": Object {
+      "account_number": "23",
+      "id": 2,
+      "routing_number": "22",
+      "user_id": null,
+    },
+    "to_id": 2,
+  },
+]
+`;
+
+exports[`upsertTransactionAndBankAccount should add transaction with existing bank account 1`] = `
+Array [
+  Object {
+    "amount": 3432,
+    "currency": "USD",
+    "from_id": null,
+    "id": "c910e278-1362-4d3a-b224-47d40eb6eb44",
+    "to_id": 2,
+  },
+]
+`;
+
+exports[`upsertTransactionAndBankAccount should ignore the same transaction being added multiple times 1`] = `
+Array [
+  Object {
+    "amount": 1232,
+    "currency": "USD",
+    "from_id": null,
+    "id": "c910e278-1362-4d3a-b224-47d40eb6eb46",
+    "to": Object {
+      "account_number": "23",
+      "id": 2,
+      "routing_number": "22",
+      "user_id": null,
+    },
+    "to_id": 2,
+  },
+]
+`;

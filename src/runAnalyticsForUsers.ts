@@ -1,25 +1,17 @@
 import { prisma } from './prismaClient'
-import { formatDecimalInt } from './fiatWorker'
 
-export async function runAnalyticsForUsers(
-  userIds: { id: number; full_name: string }[]
-) {
+export function formatDecimalInt(int: number | null) {
+  return (int ?? 0) / 100
+}
+
+export interface IUser {
+  id: number
+  full_name: string
+}
+
+export async function runAnalyticsForUsers(userIds: IUser[]) {
   for (const { id, full_name } of userIds) {
-    const sumForUser = await prisma.transaction.aggregate({
-      _sum: { amount: true },
-      where: { to: { user_id: id } }
-    })
-
-    const countForUser = await prisma.transaction.aggregate({
-      _count: true,
-      where: { to: { user_id: id } }
-    })
-
-    console.log(
-      `Deposited for ${full_name}: count=${
-        countForUser._count
-      } sum=${formatDecimalInt(sumForUser._sum.amount)} USD`
-    )
+    await sumAndCountForUser({ id, full_name })
   }
 
   const sumWithNoKnownUser = await prisma.transaction.aggregate({
@@ -58,4 +50,24 @@ export async function runAnalyticsForUsers(
     sumWithNoKnownUser,
     countWithNoKnownUser
   }
+}
+
+export async function sumAndCountForUser({ id, full_name }: IUser) {
+  const sumForUser = await prisma.transaction.aggregate({
+    _sum: { amount: true },
+    where: { to: { user_id: id } }
+  })
+
+  const countForUser = await prisma.transaction.aggregate({
+    _count: true,
+    where: { to: { user_id: id } }
+  })
+
+  console.log(
+    `Deposited for ${full_name}: count=${
+      countForUser._count
+    } sum=${formatDecimalInt(sumForUser._sum.amount)} USD`
+  )
+
+  return { sumForUser, countForUser }
 }

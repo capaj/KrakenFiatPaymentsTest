@@ -38,10 +38,12 @@ const seed = [
   }
 ]
 
-;(async () => {
+export const seedDb = async () => {
   await prisma.user.deleteMany()
   await prisma.bankAccount.deleteMany()
   await prisma.transaction.deleteMany()
+  console.log('db cleared')
+
   for (const userData of seed) {
     await prisma.user.create({
       data: {
@@ -59,6 +61,7 @@ const seed = [
       }
     })
   }
+  console.log('db seeded')
 
-  await prisma.$disconnect()
-})()
+  // await prisma.$disconnect() // only used if we need to run this from CLI
+}
