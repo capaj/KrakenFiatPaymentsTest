@@ -9,4 +9,5 @@ RUN npx prisma generate
 RUN npm run build
 RUN ls
 
-CMD ["node", "dist/fiatWorker.js"]
+ENTRYPOINT [ "/usr/bin/python3", "dockerize", "-wait", "tcp://db:5432" ]
+CMD [ "npm", "run", "migrateAndRun" ]

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "migrate": "prisma migrate dev",
+    "migrateAndRun": "npm run migrate && node dist/fiatWorker.js",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker compose down",
     "test": "echo \"Error: no test specified\" && exit 1"
